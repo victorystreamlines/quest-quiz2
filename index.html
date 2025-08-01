@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GL Periodic - Interactive Sliding Quiz</title>
+    
+    <!-- Force this page to be the index -->
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="index.html">
+    <meta name="cache-control" content="no-cache">
+    <meta name="expires" content="0">
+    
+    <link rel="icon" type="image/png" href="ChemistryLogo.png">
+    <link rel="shortcut icon" type="image/png" href="ChemistryLogo.png">
+    <link rel="apple-touch-icon" href="ChemistryLogo.png">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="index.css">
+    
+    <!-- SEO and Social Media Meta Tags -->
+    <meta name="description" content="Interactive Sliding Periodic Table Quiz - Learn all 118 elements with comprehensive questions and instant feedback. Perfect for students and chemistry enthusiasts.">
+    <meta name="keywords" content="periodic table, chemistry quiz, elements, interactive learning, education, science">
+    <meta name="author" content="GL Periodic">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Interactive Sliding Periodic Table Quiz">
+    <meta property="og:description" content="Master the periodic table with our interactive sliding quiz featuring all 118 elements">
+    <meta property="og:image" content="ChemistryLogo.png">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Interactive Sliding Periodic Table Quiz">
+    <meta name="twitter:description" content="Master the periodic table with our interactive sliding quiz featuring all 118 elements">
+    <meta name="twitter:image" content="ChemistryLogo.png">
+</head>
+<body>
+    <!-- ===== GL PERIODIC - INTERACTIVE SLIDING QUIZ ===== -->
+    <!-- This is the UPDATED index.html with the new sliding quiz interface -->
+    <!-- If you see a different interface, clear cache and refresh -->
+    
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading">
+        <div class="loader"></div>
+        <p style="color: white; margin-top: 1rem; font-size: 0.9rem;">
+            Loading GL Periodic Quiz...
+        </p>
+                </div>
+                
+    <!-- Quiz Content -->
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <!-- Row 1: Control Tools (Order + Search) -->
+            <div class="header-controls-row">
+                <div class="order-controls-compact">
+                    <div class="order-group-compact">
+                        <label class="order-label-compact" for="orderDropdown">📊 Primary</label>
+                        <select id="orderDropdown" class="order-dropdown-compact">
+                            <option value="default" selected>🔢 Atomic Number</option>
+                            <optgroup label="Physical Properties">
+                                <option value="state">🌡️ Physical State</option>
+                                <option value="metalType">🔨 Metal Type</option>
+                                <option value="conductivity">⚡ Conductivity</option>
+                            </optgroup>
+                            <optgroup label="Magnetic Properties">
+                                <option value="magneticSusceptibility">🧲 Susceptibility</option>
+                                <option value="magneticPermeability">🔄 Permeability</option>
+                            </optgroup>
+                            <optgroup label="Electrical Properties">
+                                <option value="jouleHeating">🔥 Joule Heating</option>
+                                <option value="chargeStorage">🔋 Charge Storage</option>
+                            </optgroup>
+                        </select>
+                </div>
+                    <div class="order-group-compact">
+                        <label class="order-label-compact secondary" for="subOrderDropdown">📋 Then By</label>
+                        <select id="subOrderDropdown" class="order-dropdown-compact secondary">
+                            <option value="none" selected>➖ None</option>
+                            <optgroup label="Physical Properties">
+                                <option value="state">🌡️ Physical State</option>
+                                <option value="metalType">🔨 Metal Type</option>
+                                <option value="conductivity">⚡ Conductivity</option>
+                            </optgroup>
+                            <optgroup label="Magnetic Properties">
+                                <option value="magneticSusceptibility">🧲 Susceptibility</option>
+                                <option value="magneticPermeability">🔄 Permeability</option>
+                            </optgroup>
+                            <optgroup label="Electrical Properties">
+                                <option value="jouleHeating">🔥 Joule Heating</option>
+                                <option value="chargeStorage">🔋 Charge Storage</option>
+                            </optgroup>
+                            <optgroup label="Sort by Atomic Number">
+                                <option value="atomicNumber">🔢 Atomic Number</option>
+                            </optgroup>
+                        </select>
+        </div>
+    </div>
+                <div class="search-controls-compact">
+                    <label class="search-label-compact" for="elementNumberSearch">#️⃣</label>
+                    <input 
+                        type="number" 
+                        id="elementNumberSearch" 
+                        class="search-input-compact" 
+                        placeholder="1-118" 
+                        min="1" 
+                        max="118"
+                        title="Enter element number (1-118)"
+                    >
+                    <button class="search-go-btn-compact" id="searchGoBtn" onclick="quiz.performSearch()">
+                        🚀
+            </button>
+            </div>
+        </div>
+            
+            <!-- Row 2: Title, Progress, Navigation -->
+            <div class="header-info-row">
+                <div class="title-section">
+                    <h1 class="quiz-title-compact">GL Periodic Quiz</h1>
+                    <div class="quiz-stats-compact">
+                        <span class="current-element-compact" id="currentElement">Element 1</span>
+                        <span class="quiz-score-compact" id="quizScore">0%</span>
+                </div>
+            </div>
+                <div class="progress-section-compact">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+        </div>
+                    <span class="progress-text-compact" id="progressText">0/118</span>
+                </div>
+                <div class="navigation-section">
+                    <button class="nav-btn-compact" id="prevBtn" onclick="quiz.previousElement()" title="Previous Element (Ctrl+←)">⬅️</button>
+                    <button class="nav-btn-compact reset" id="resetBtn" onclick="quiz.resetToFirst()" title="Reset to First Element (Page 1)">🔄</button>
+                    <button class="nav-btn-compact primary" id="nextBtn" onclick="quiz.nextElement()" title="Next Element (Ctrl+→)">➡️</button>
+                        </div>
+                    </div>
+        </header>
+        
+        <div class="slides-container">
+            <div class="slides-wrapper" id="slidesWrapper">
+                <!-- Default slide for Hydrogen (fallback if JS fails) -->
+                <div class="element-slide active" data-element="0">
+                    <div class="element-header">
+                        <h2 class="element-title">Hydrogen (H)</h2>
+                        <div class="element-info">
+                            <span class="atomic-number">Atomic Number: 1</span>
+                            <span class="atomic-mass">Mass: 1.008</span>
+                </div>
+            </div>
+                    <div class="quiz-section">
+                        <div class="quiz-grid">
+                            <div class="quiz-field">
+                                <label>Symbol:</label>
+                                <input type="text" class="quiz-input" data-field="symbol" data-element="0" data-answer="H" data-help-type="symbol" placeholder="Enter symbol">
+                    </div>
+                            <div class="quiz-field">
+                                <label>Name:</label>
+                                <input type="text" class="quiz-input" data-field="name" data-element="0" data-answer="Hydrogen" data-help-type="name" placeholder="Enter name">
+                </div>
+                            <div class="quiz-field">
+                                <label>Mass:</label>
+                                <input type="text" class="quiz-input" data-field="mass" data-element="0" data-answer="1.008" data-help-type="mass" placeholder="Enter mass">
+                    </div>
+                            <div class="quiz-field">
+                                <label>Physical State:</label>
+                                <input type="text" class="quiz-input" data-field="state" data-element="0" data-answer="G" data-help-type="state" placeholder="S/L/G">
+                </div>
+                            <div class="quiz-field">
+                                <label>Metal Type:</label>
+                                <input type="text" class="quiz-input" data-field="metalType" data-element="0" data-answer="N" data-help-type="metalType" placeholder="M/N/T">
+                    </div>
+                            <div class="quiz-field">
+                                <label>Conductivity:</label>
+                                <input type="text" class="quiz-input" data-field="conductivity" data-element="0" data-answer="I" data-help-type="conductivity" placeholder="C/S/I">
+                </div>
+                            <div class="quiz-field">
+                                <label>Magnetic Susceptibility:</label>
+                                <input type="text" class="quiz-input" data-field="magneticSusceptibility" data-element="0" data-answer="D" data-help-type="magneticSusceptibility" placeholder="F/P/D">
+                    </div>
+                            <div class="quiz-field">
+                                <label>Magnetic Permeability:</label>
+                                <input type="text" class="quiz-input" data-field="magneticPermeability" data-element="0" data-answer="N" data-help-type="magneticPermeability" placeholder="H/M/L/N">
+                </div>
+                            <div class="quiz-field">
+                                <label>Joule Heating:</label>
+                                <input type="text" class="quiz-input" data-field="jouleHeating" data-element="0" data-answer="N" data-help-type="jouleHeating" placeholder="H/M/L/N">
+                    </div>
+                            <div class="quiz-field">
+                                <label>Charge Storage:</label>
+                                <input type="text" class="quiz-input" data-field="chargeStorage" data-element="0" data-answer="N" data-help-type="chargeStorage" placeholder="H/M/L/N">
+                    </div>
+                </div>
+                        <div class="slide-actions">
+                            <button class="action-btn toggle-btn" id="toggleAnswersBtn-0" onclick="quiz && quiz.toggleAnswers(0)">Show Answers</button>
+                            <button class="action-btn reset-btn" onclick="quiz && quiz.resetElement(0)">Reset Element</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Floating Help Popup -->
+        <div id="helpPopup" class="help-popup">
+            <div class="help-popup-header">
+                <span class="help-popup-icon" id="helpIcon">💡</span>
+                <span id="helpTitle">Field Help</span>
+            </div>
+            <div class="help-popup-content" id="helpContent">
+                Select a field to see help information
+                </div>
+            </div>
+        </div>
+    
+
+
+    <!-- JavaScript -->
+    <script src="bootstrap.bundle.min.js"></script>
+    <script src="index.js"></script>
+    
+    <!-- Fallback script in case index.js fails to load -->
+    <script>
+        // Check if main quiz object loaded, if not create basic functionality
+        setTimeout(function() {
+            if (typeof quiz === 'undefined') {
+                console.log('Main quiz script failed to load, using fallback');
+                
+                // Basic fallback functionality
+                window.quiz = {
+                    toggleAnswers: function(elementIndex) {
+                        const inputs = document.querySelectorAll(`input[data-element="${elementIndex}"]`);
+                        const button = document.getElementById(`toggleAnswersBtn-${elementIndex}`);
+                        
+                        if (button.textContent === 'Show Answers') {
+                            inputs.forEach(input => {
+                                input.value = input.getAttribute('data-answer');
+                            });
+                            button.textContent = 'Hide Answers';
+                        } else {
+                            inputs.forEach(input => {
+                                input.value = '';
+                            });
+                            button.textContent = 'Show Answers';
+                        }
+                    },
+                    
+                    resetElement: function(elementIndex) {
+                        const inputs = document.querySelectorAll(`input[data-element="${elementIndex}"]`);
+                        inputs.forEach(input => {
+                            input.value = '';
+                            input.classList.remove('correct', 'incorrect');
+                        });
+                        
+                        const button = document.getElementById(`toggleAnswersBtn-${elementIndex}`);
+                        if (button) {
+                            button.textContent = 'Show Answers';
+                        }
+                    },
+                    
+                    previousElement: function() {
+                        alert('Please wait for the full quiz to load, or refresh the page.');
+                    },
+                    
+                    nextElement: function() {
+                        alert('Please wait for the full quiz to load, or refresh the page.');
+                    },
+                    
+                    resetToFirst: function() {
+                        alert('Please wait for the full quiz to load, or refresh the page.');
+                    },
+                    
+                    performSearch: function() {
+                        alert('Please wait for the full quiz to load, or refresh the page.');
+                    }
+                };
+                
+                // Add basic input validation
+                document.querySelectorAll('.quiz-input').forEach(input => {
+                    input.addEventListener('input', function() {
+                        const userAnswer = this.value.trim();
+                        const correctAnswer = this.getAttribute('data-answer');
+                        
+                        this.classList.remove('correct', 'incorrect');
+                        
+                        if (userAnswer && correctAnswer) {
+                            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                                this.classList.add('correct');
+                    } else {
+                                this.classList.add('incorrect');
+                            }
+                        }
+                    });
+                });
+            }
+        }, 2000); // Wait 2 seconds for main script to load
+    </script>
+    
+         <!-- Hide loading screen when everything is loaded -->
+    <script>
+         window.addEventListener('load', function() {
+             const loadingScreen = document.getElementById('loadingScreen');
+             if (loadingScreen) {
+                 setTimeout(() => {
+                     loadingScreen.style.opacity = '0';
+                 setTimeout(() => {
+                         loadingScreen.style.display = 'none';
+                 }, 500);
+                 }, 1000);
+             }
+         });
+
+        // Service Worker for PWA functionality (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful');
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+        }
+    </script>
+    
+    <!-- Analytics (optional) -->
+    <script>
+        // Simple page view tracking
+        if (typeof gtag !== 'undefined') {
+            gtag('config', 'GA_MEASUREMENT_ID', {
+                page_title: 'Interactive Sliding Quiz',
+                page_location: window.location.href
+            });
+        }
+    </script>
+</body>
+</html>
