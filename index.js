@@ -1076,6 +1076,9 @@ class SlidingPeriodicQuiz {
     generateSlides() {
         const slidesWrapper = document.getElementById('slidesWrapper');
         
+        // Clear any existing slides first (important for GitHub Pages)
+        slidesWrapper.innerHTML = '';
+        
         // Generate a slide for each element
         this.elements.forEach((element, index) => {
             const slide = this.createElementSlide(element, index);
