@@ -29,28 +29,28 @@ class SlidingPeriodicQuiz {
     initializeElements() {
         const elements = [
             // Period 1
-            { atomicNumber: 1, symbol: "H", name: "Hydrogen", atomicMass: "1.008", classification: "nonmetals", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
-            { atomicNumber: 2, symbol: "He", name: "Helium", atomicMass: "4.003", classification: "noble-gases", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
+            { atomicNumber: 1, symbol: "H", name: "Hydrogen", atomicMass: "1.008", classification: "nonmetals", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
+            { atomicNumber: 2, symbol: "He", name: "Helium", atomicMass: "4.003", classification: "noble-gases", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
             
             // Period 2
-            { atomicNumber: 3, symbol: "Li", name: "Lithium", atomicMass: "6.94", classification: "alkali-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "M", chargeStorage: "L" },
-            { atomicNumber: 4, symbol: "Be", name: "Beryllium", atomicMass: "9.012", classification: "alkaline-earth-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "M", chargeStorage: "M" },
-            { atomicNumber: 5, symbol: "B", name: "Boron", atomicMass: "10.81", classification: "metalloids", state: "S", metalType: "T", conductivity: "S", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "L", chargeStorage: "L" },
-            { atomicNumber: 6, symbol: "C", name: "Carbon", atomicMass: "12.01", classification: "nonmetals", state: "S", metalType: "N", conductivity: "S", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "L", chargeStorage: "N" },
-            { atomicNumber: 7, symbol: "N", name: "Nitrogen", atomicMass: "14.01", classification: "nonmetals", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
-            { atomicNumber: 8, symbol: "O", name: "Oxygen", atomicMass: "16.00", classification: "nonmetals", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "N", chargeStorage: "N" },
-            { atomicNumber: 9, symbol: "F", name: "Fluorine", atomicMass: "19.00", classification: "halogens", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
-            { atomicNumber: 10, symbol: "Ne", name: "Neon", atomicMass: "20.18", classification: "noble-gases", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
+            { atomicNumber: 3, symbol: "Li", name: "Lithium", atomicMass: "6.94", classification: "alkali-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "M", chargeStorage: "L", heatConductance: "H" },
+            { atomicNumber: 4, symbol: "Be", name: "Beryllium", atomicMass: "9.012", classification: "alkaline-earth-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "M", chargeStorage: "M", heatConductance: "H" },
+            { atomicNumber: 5, symbol: "B", name: "Boron", atomicMass: "10.81", classification: "metalloids", state: "S", metalType: "T", conductivity: "S", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "L", chargeStorage: "L", heatConductance: "L" },
+            { atomicNumber: 6, symbol: "C", name: "Carbon", atomicMass: "12.01", classification: "nonmetals", state: "S", metalType: "N", conductivity: "S", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "L", chargeStorage: "N", heatConductance: "M" },
+            { atomicNumber: 7, symbol: "N", name: "Nitrogen", atomicMass: "14.01", classification: "nonmetals", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
+            { atomicNumber: 8, symbol: "O", name: "Oxygen", atomicMass: "16.00", classification: "nonmetals", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
+            { atomicNumber: 9, symbol: "F", name: "Fluorine", atomicMass: "19.00", classification: "halogens", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
+            { atomicNumber: 10, symbol: "Ne", name: "Neon", atomicMass: "20.18", classification: "noble-gases", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
             
             // Period 3
-            { atomicNumber: 11, symbol: "Na", name: "Sodium", atomicMass: "22.99", classification: "alkali-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "M", chargeStorage: "L" },
-            { atomicNumber: 12, symbol: "Mg", name: "Magnesium", atomicMass: "24.31", classification: "alkaline-earth-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "M", chargeStorage: "M" },
-            { atomicNumber: 13, symbol: "Al", name: "Aluminum", atomicMass: "26.98", classification: "post-transition-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "H", chargeStorage: "M" },
-            { atomicNumber: 14, symbol: "Si", name: "Silicon", atomicMass: "28.09", classification: "metalloids", state: "S", metalType: "T", conductivity: "S", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "L", chargeStorage: "L" },
-            { atomicNumber: 15, symbol: "P", name: "Phosphorus", atomicMass: "30.97", classification: "nonmetals", state: "S", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
-            { atomicNumber: 16, symbol: "S", name: "Sulfur", atomicMass: "32.07", classification: "nonmetals", state: "S", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
-            { atomicNumber: 17, symbol: "Cl", name: "Chlorine", atomicMass: "35.45", classification: "halogens", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
-            { atomicNumber: 18, symbol: "Ar", name: "Argon", atomicMass: "39.95", classification: "noble-gases", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N" },
+            { atomicNumber: 11, symbol: "Na", name: "Sodium", atomicMass: "22.99", classification: "alkali-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "M", chargeStorage: "L", heatConductance: "H" },
+            { atomicNumber: 12, symbol: "Mg", name: "Magnesium", atomicMass: "24.31", classification: "alkaline-earth-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "M", chargeStorage: "M", heatConductance: "H" },
+            { atomicNumber: 13, symbol: "Al", name: "Aluminum", atomicMass: "26.98", classification: "post-transition-metals", state: "S", metalType: "M", conductivity: "C", magneticSusceptibility: "P", magneticPermeability: "L", jouleHeating: "H", chargeStorage: "M", heatConductance: "H" },
+            { atomicNumber: 14, symbol: "Si", name: "Silicon", atomicMass: "28.09", classification: "metalloids", state: "S", metalType: "T", conductivity: "S", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "L", chargeStorage: "L", heatConductance: "L" },
+            { atomicNumber: 15, symbol: "P", name: "Phosphorus", atomicMass: "30.97", classification: "nonmetals", state: "S", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
+            { atomicNumber: 16, symbol: "S", name: "Sulfur", atomicMass: "32.07", classification: "nonmetals", state: "S", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
+            { atomicNumber: 17, symbol: "Cl", name: "Chlorine", atomicMass: "35.45", classification: "halogens", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
+            { atomicNumber: 18, symbol: "Ar", name: "Argon", atomicMass: "39.95", classification: "noble-gases", state: "G", metalType: "N", conductivity: "I", magneticSusceptibility: "D", magneticPermeability: "N", jouleHeating: "N", chargeStorage: "N", heatConductance: "N" },
         ];
 
         // Auto-generate remaining elements 19-118 with basic properties
@@ -185,7 +185,8 @@ class SlidingPeriodicQuiz {
             magneticSusceptibility: this.getMagneticSusceptibility(atomicNumber),
             magneticPermeability: this.getMagneticPermeability(atomicNumber),
             jouleHeating: this.getJouleHeating(info.classification),
-            chargeStorage: this.getChargeStorage(atomicNumber)
+            chargeStorage: this.getChargeStorage(atomicNumber),
+            heatConductance: this.getHeatConductance(info.classification, atomicNumber)
         };
     }
 
@@ -230,6 +231,27 @@ class SlidingPeriodicQuiz {
         if ([22, 40, 56, 72, 73].includes(atomicNumber)) return "H"; // Ti, Zr, Ba, Hf, Ta
         if (atomicNumber >= 57 && atomicNumber <= 71) return "M"; // Lanthanides
         return "N";
+    }
+
+    getHeatConductance(classification, atomicNumber) {
+        // High thermal conductance metals (excellent thermal conductors)
+        if (['alkali-metals', 'alkaline-earth-metals'].includes(classification)) return "H";
+        if ([29, 47, 79].includes(atomicNumber)) return "H"; // Cu, Ag, Au (excellent conductors)
+        if ([13, 30].includes(atomicNumber)) return "H"; // Al, Zn (excellent conductors)
+        
+        // Medium-High thermal conductance (good metal conductors)
+        if (['transition-metals', 'post-transition-metals'].includes(classification)) return "M";
+        if ([6].includes(atomicNumber)) return "M"; // Carbon (graphite/diamond)
+        
+        // Low thermal conductance (metalloids and some specific elements)
+        if (classification === 'metalloids') return "L";
+        if ([82, 83].includes(atomicNumber)) return "L"; // Pb, Bi (poor metal conductors)
+        
+        // Very low/No thermal conductance (non-metals, gases, halogens, noble gases)
+        if (['nonmetals', 'halogens', 'noble-gases'].includes(classification)) return "N";
+        if (['lanthanides', 'actinides'].includes(classification)) return "L"; // Rare earth elements
+        
+        return "N"; // Default for unknown
     }
 
     createQuizInterface() {
@@ -486,6 +508,14 @@ class SlidingPeriodicQuiz {
                     return chargeCompare !== 0 ? chargeCompare : a.atomicNumber - b.atomicNumber;
                 }
             },
+            heatConductance: {
+                name: 'Heat Conductance',
+                sortFunction: (a, b) => {
+                    const heatOrder = { 'H': 0, 'M': 1, 'L': 2, 'N': 3 }; // High to Low conductance
+                    const heatCompare = heatOrder[a.heatConductance] - heatOrder[b.heatConductance];
+                    return heatCompare !== 0 ? heatCompare : a.atomicNumber - b.atomicNumber;
+                }
+            },
             atomicNumber: {
                 name: 'Atomic Number',
                 sortFunction: (a, b) => a.atomicNumber - b.atomicNumber
@@ -638,6 +668,10 @@ class SlidingPeriodicQuiz {
             case 'chargeStorage': {
                 const chargeOrder = { 'H': 0, 'M': 1, 'L': 2, 'N': 3 };
                 return chargeOrder[a.chargeStorage] - chargeOrder[b.chargeStorage];
+            }
+            case 'heatConductance': {
+                const heatOrder = { 'H': 0, 'M': 1, 'L': 2, 'N': 3 };
+                return heatOrder[a.heatConductance] - heatOrder[b.heatConductance];
             }
             case 'atomicNumber': {
                 return a.atomicNumber - b.atomicNumber;
@@ -1069,6 +1103,19 @@ class SlidingPeriodicQuiz {
                     'N': 'No storage capacity'
                 },
                 note: 'Important for energy storage and electronic applications'
+            },
+            heatConductance: {
+                icon: '🔥',
+                title: 'Heat Conductance',
+                className: 'thermal-help',
+                content: 'Describes how effectively the element conducts thermal energy (heat).',
+                examples: {
+                    'H': 'High heat conductance (excellent thermal conductor)',
+                    'M': 'Medium heat conductance (good thermal conductor)',
+                    'L': 'Low heat conductance (poor thermal conductor)',
+                    'N': 'No/Very low heat conductance (thermal insulator)'
+                },
+                note: 'Metals generally have high thermal conductance, while non-metals have low conductance'
             }
         };
     }
@@ -1109,7 +1156,7 @@ class SlidingPeriodicQuiz {
 
                 <div class="score-display">
                     <div class="score-number" id="elementScore-${index}">0</div>
-                    <div class="score-total">out of 10 questions</div>
+                    <div class="score-total">out of 11 questions</div>
                 </div>
 
                 <div class="quiz-fields">
@@ -1181,6 +1228,21 @@ class SlidingPeriodicQuiz {
                                    data-answer="${element.conductivity}"
                                    data-help-type="conductivity"
                                    placeholder="Cond."
+                                   maxlength="1">
+                        </div>
+                    </div>
+
+                    <div class="quiz-field">
+                        <label>Thermal Properties:</label>
+                        <div class="input-group">
+                            <input type="text" 
+                                   id="heatConductance-${index}" 
+                                   class="quiz-input" 
+                                   data-field="heatConductance" 
+                                   data-element="${index}"
+                                   data-answer="${element.heatConductance}"
+                                   data-help-type="heatConductance"
+                                   placeholder="Heat"
                                    maxlength="1">
                         </div>
                     </div>
@@ -1449,7 +1511,7 @@ class SlidingPeriodicQuiz {
 
     updateProgress() {
         let totalCorrect = 0;
-        let totalQuestions = this.totalElements * 10; // 10 questions per element
+        let totalQuestions = this.totalElements * 11; // 11 questions per element
         
         Object.values(this.quizState.elementScores).forEach(score => {
             totalCorrect += score.correct;
@@ -1479,7 +1541,7 @@ class SlidingPeriodicQuiz {
         const currentField = currentInput.getAttribute('data-field');
         
         // Field order
-        const fieldOrder = ['symbol', 'name', 'mass', 'state', 'metalType', 'conductivity', 'magneticSusceptibility', 'magneticPermeability', 'jouleHeating', 'chargeStorage'];
+        const fieldOrder = ['symbol', 'name', 'mass', 'state', 'metalType', 'conductivity', 'heatConductance', 'magneticSusceptibility', 'magneticPermeability', 'jouleHeating', 'chargeStorage'];
         const currentFieldIndex = fieldOrder.indexOf(currentField);
         
         let nextInput = null;
