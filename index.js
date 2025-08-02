@@ -13,6 +13,8 @@ class SlidingPeriodicQuiz {
         this.currentSubOrder = 'none'; // Current secondary ordering method
         this.orderedElements = [...this.elements]; // Currently ordered elements array
         this.orderMapping = {}; // Maps original index to ordered index
+        this.isRandomMode = false; // Random quiz mode state
+        this.randomSeed = null; // Seed for reproducible randomization
         
         this.init();
     }
@@ -316,6 +318,15 @@ class SlidingPeriodicQuiz {
                                 </select>
                             </div>
                         </div>
+                        
+                        <!-- Random Quiz Control -->
+                        <div class="random-controls-compact">
+                            <button class="random-btn-compact" id="randomBtn" onclick="quiz.toggleRandomMode()" title="Toggle Random Quiz Mode">
+                                <span class="random-icon" id="randomIcon">🎲</span>
+                                <span class="random-text" id="randomText">Random</span>
+                            </button>
+                        </div>
+                        
                         <div class="search-controls-compact">
                             <label class="search-label-compact" for="elementNumberSearch">#️⃣</label>
                             <input 
@@ -350,7 +361,10 @@ class SlidingPeriodicQuiz {
                         </div>
                         <div class="navigation-section">
                             <button class="nav-btn-compact" id="prevBtn" onclick="quiz.previousElement()" title="Previous Element (Ctrl+←)">⬅️</button>
-                            <button class="nav-btn-compact reset" id="resetBtn" onclick="quiz.resetToFirst()" title="Reset to First Element (Page 1)">🔄</button>
+                            <button class="nav-btn-compact refresh" id="refreshBtn" onclick="quiz.refreshToDefault()" title="Refresh Everything to Default Settings (Ctrl+R)">
+                                <span class="refresh-icon">🔄</span>
+                                <span class="refresh-text">Reset All</span>
+                            </button>
                             <button class="nav-btn-compact primary" id="nextBtn" onclick="quiz.nextElement()" title="Next Element (Ctrl+→)">➡️</button>
                         </div>
                     </div>
@@ -385,6 +399,87 @@ class SlidingPeriodicQuiz {
     setupControlSystems() {
         this.setupSearchSystem();
         this.setupOrderSystem();
+        this.setupRandomSystem();
+    }
+
+    setupRandomSystem() {
+        // Initialize random system
+        setTimeout(() => {
+            const randomBtn = document.getElementById('randomBtn');
+            if (randomBtn) {
+                // Remove onclick attribute and add proper event listener
+                randomBtn.removeAttribute('onclick');
+                randomBtn.addEventListener('click', () => {
+                    this.toggleRandomMode();
+                });
+                
+                // Update button appearance based on saved state
+                this.updateRandomButton();
+            }
+        }, 100);
+    }
+
+    toggleRandomMode() {
+        // Toggle random mode
+        this.isRandomMode = !this.isRandomMode;
+        
+        // Generate new random seed when enabling random mode
+        if (this.isRandomMode) {
+            this.randomSeed = Math.random();
+        }
+        
+        // Update button appearance
+        this.updateRandomButton();
+        
+        // Re-apply current ordering with/without randomization
+        this.changeOrder(this.currentOrder, this.currentSubOrder);
+        
+        // Show notification
+        const modeText = this.isRandomMode ? 'Random Quiz Mode Enabled 🎲' : 'Random Quiz Mode Disabled 📋';
+        this.showSearchSuccess(modeText);
+        
+        // Save state
+        this.saveProgress();
+    }
+
+    updateRandomButton() {
+        const randomBtn = document.getElementById('randomBtn');
+        const randomIcon = document.getElementById('randomIcon');
+        const randomText = document.getElementById('randomText');
+        
+        if (randomBtn && randomIcon && randomText) {
+            if (this.isRandomMode) {
+                randomBtn.classList.add('active');
+                randomIcon.textContent = '🎯';
+                randomText.textContent = 'Random ON';
+                randomBtn.title = 'Random Quiz Mode Active - Click to Disable';
+            } else {
+                randomBtn.classList.remove('active');
+                randomIcon.textContent = '🎲';
+                randomText.textContent = 'Random';
+                randomBtn.title = 'Click to Enable Random Quiz Mode';
+            }
+        }
+    }
+
+    // Seeded random number generator for reproducible shuffling
+    seededRandom(seed) {
+        const x = Math.sin(seed) * 10000;
+        return x - Math.floor(x);
+    }
+
+    // Fisher-Yates shuffle with optional seed for reproducibility
+    shuffleArray(array, seed = null) {
+        const shuffled = [...array];
+        const random = seed ? 
+            (() => { seed = this.seededRandom(seed * 9301 + 49297); return seed; }) :
+            Math.random;
+        
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
     }
 
     setupSearchSystem() {
@@ -579,6 +674,11 @@ class SlidingPeriodicQuiz {
 
         // Sort elements according to the new criteria (with sub-ordering)
         this.orderedElements = [...this.elements].sort(this.createDualSortFunction(orderType, this.currentSubOrder));
+        
+        // Apply randomization if random mode is enabled
+        if (this.isRandomMode && this.randomSeed) {
+            this.orderedElements = this.shuffleArray(this.orderedElements, this.randomSeed);
+        }
 
         // Update mapping
         this.updateOrderMapping();
@@ -1385,6 +1485,9 @@ class SlidingPeriodicQuiz {
                 } else if (e.key === 'ArrowRight') {
                     e.preventDefault();
                     this.nextElement();
+                } else if (e.key === 'r' || e.key === 'R') {
+                    e.preventDefault();
+                    this.refreshToDefault();
                 }
             }
         });
@@ -1724,34 +1827,8 @@ class SlidingPeriodicQuiz {
     }
 
     restart() {
-        this.currentElementIndex = 0;
-        this.quizState = { elementScores: {}, totalCorrect: 0, percentage: 0, currentElement: 0 };
-        this.answersShown = {}; // Reset all toggle states
-        this.saveProgress();
-        
-        // Reset all inputs
-        document.querySelectorAll('.quiz-input').forEach(input => {
-            input.value = '';
-            input.classList.remove('correct', 'incorrect');
-        });
-        
-        // Reset scores and toggle buttons
-        for (let i = 0; i < this.totalElements; i++) {
-            const scoreElement = document.getElementById(`elementScore-${i}`);
-            if (scoreElement) {
-                scoreElement.textContent = '0';
-            }
-            
-            const toggleBtn = document.getElementById(`toggleAnswersBtn-${i}`);
-            if (toggleBtn) {
-                toggleBtn.textContent = 'Show Answers';
-                toggleBtn.classList.remove('btn-info');
-                toggleBtn.classList.add('btn-secondary');
-            }
-        }
-        
-        this.updateProgress();
-        this.slideToElement(0);
+        // Use the comprehensive refresh function for consistency
+        this.refreshToDefault();
     }
 
     resetToFirst() {
@@ -1770,6 +1847,120 @@ class SlidingPeriodicQuiz {
         
         // Show success notification
         this.showSearchSuccess("Reset to first element (Hydrogen)");
+    }
+
+    refreshToDefault() {
+        // Hide help popup first
+        this.hideHelpPopup();
+        
+        // Show loading animation on button
+        const refreshBtn = document.getElementById('refreshBtn');
+        const refreshIcon = refreshBtn?.querySelector('.refresh-icon');
+        const refreshText = refreshBtn?.querySelector('.refresh-text');
+        
+        if (refreshIcon && refreshText) {
+            refreshIcon.style.animation = 'refreshSpin 1s ease-in-out infinite';
+            refreshText.textContent = 'Refreshing...';
+        }
+        
+        // Disable button temporarily
+        if (refreshBtn) {
+            refreshBtn.disabled = true;
+            refreshBtn.style.opacity = '0.7';
+        }
+        
+        setTimeout(() => {
+            // Reset all state variables
+            this.currentElementIndex = 0;
+            this.currentOrder = 'default';
+            this.currentSubOrder = 'none';
+            this.isRandomMode = false;
+            this.randomSeed = null;
+            this.answersShown = {};
+            
+            // Reset quiz state completely
+            this.quizState = {
+                elementScores: {},
+                totalCorrect: 0,
+                percentage: 0,
+                currentElement: 0,
+                currentOrder: 'default',
+                currentSubOrder: 'none',
+                userAnswers: {},
+                answersShown: {},
+                isRandomMode: false,
+                randomSeed: null
+            };
+            
+            // Reset to default element order
+            this.orderedElements = [...this.elements];
+            this.updateOrderMapping();
+            
+            // Clear all inputs and reset their states
+            document.querySelectorAll('.quiz-input').forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
+            });
+            
+            // Clear search input
+            const elementNumberInput = document.getElementById('elementNumberSearch');
+            if (elementNumberInput) {
+                elementNumberInput.value = '';
+                elementNumberInput.style.borderColor = '';
+                elementNumberInput.style.backgroundColor = '';
+            }
+            
+            // Reset all dropdowns to default
+            const orderDropdown = document.getElementById('orderDropdown');
+            const subOrderDropdown = document.getElementById('subOrderDropdown');
+            if (orderDropdown) orderDropdown.value = 'default';
+            if (subOrderDropdown) subOrderDropdown.value = 'none';
+            
+            // Reset random button
+            this.updateRandomButton();
+            
+            // Reset all toggle buttons
+            for (let i = 0; i < this.totalElements; i++) {
+                const toggleBtn = document.getElementById(`toggleAnswersBtn-${i}`);
+                const scoreElement = document.getElementById(`elementScore-${i}`);
+                
+                if (toggleBtn) {
+                    toggleBtn.textContent = 'Show Answers';
+                    toggleBtn.classList.remove('btn-info');
+                    toggleBtn.classList.add('btn-secondary');
+                }
+                
+                if (scoreElement) {
+                    scoreElement.textContent = '0';
+                }
+            }
+            
+            // Regenerate slides with default order
+            this.regenerateSlides();
+            
+            // Navigate to first element
+            this.slideToElement(0);
+            
+            // Update progress display
+            this.updateProgress();
+            
+            // Save the reset state
+            this.saveProgress();
+            
+            // Re-enable button and reset appearance
+            if (refreshBtn && refreshIcon && refreshText) {
+                refreshBtn.disabled = false;
+                refreshBtn.style.opacity = '1';
+                refreshIcon.style.animation = '';
+                refreshText.textContent = 'Reset All';
+            }
+            
+            // Show success notification
+            this.showSearchSuccess("🔄 Everything reset to default! Welcome back to Hydrogen!");
+            
+        }, 800); // Give user visual feedback with delay
     }
 
     reviewMistakes() {
@@ -1796,6 +1987,8 @@ class SlidingPeriodicQuiz {
         this.quizState.currentElement = this.currentElementIndex;
         this.quizState.currentOrder = this.currentOrder;
         this.quizState.currentSubOrder = this.currentSubOrder;
+        this.quizState.isRandomMode = this.isRandomMode;
+        this.quizState.randomSeed = this.randomSeed;
         
         // Save all input values
         document.querySelectorAll('.quiz-input').forEach(input => {
@@ -1829,7 +2022,9 @@ class SlidingPeriodicQuiz {
             currentOrder: 'default',
             currentSubOrder: 'none',
             userAnswers: {},
-            answersShown: {}
+            answersShown: {},
+            isRandomMode: false,
+            randomSeed: null
         };
     }
 
@@ -1840,10 +2035,20 @@ class SlidingPeriodicQuiz {
         this.currentOrder = this.quizState.currentOrder || 'default';
         this.currentSubOrder = this.quizState.currentSubOrder || 'none';
         
-        // Apply the saved orders if they're not default
-        if (this.currentOrder !== 'default' || this.currentSubOrder !== 'none') {
+        // Restore random mode state
+        this.isRandomMode = this.quizState.isRandomMode || false;
+        this.randomSeed = this.quizState.randomSeed || null;
+        
+        // Apply the saved orders if they're not default or if random mode is active
+        if (this.currentOrder !== 'default' || this.currentSubOrder !== 'none' || this.isRandomMode) {
             // Apply the saved order without triggering change event
             this.orderedElements = [...this.elements].sort(this.createDualSortFunction(this.currentOrder, this.currentSubOrder));
+            
+            // Apply randomization if random mode was enabled
+            if (this.isRandomMode && this.randomSeed) {
+                this.orderedElements = this.shuffleArray(this.orderedElements, this.randomSeed);
+            }
+            
             this.updateOrderMapping();
             this.regenerateSlides();
         }
@@ -1879,6 +2084,9 @@ class SlidingPeriodicQuiz {
                 for (let i = 0; i < this.totalElements; i++) {
                     this.updateElementScore(i);
                 }
+                
+                // Update random button state after restore
+                this.updateRandomButton();
             }, 200);
         }
     }

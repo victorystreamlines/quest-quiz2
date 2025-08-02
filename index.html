@@ -99,10 +99,19 @@
                                 <option value="atomicNumber">🔢 Atomic Number</option>
                             </optgroup>
                         </select>
-        </div>
-    </div>
-                <div class="search-controls-compact">
-                    <label class="search-label-compact" for="elementNumberSearch">#️⃣</label>
+                                </div>
+                    </div>
+                    
+                    <!-- Random Quiz Control -->
+                    <div class="random-controls-compact">
+                        <button class="random-btn-compact" id="randomBtn" onclick="quiz.toggleRandomMode()" title="Toggle Random Quiz Mode">
+                            <span class="random-icon" id="randomIcon">🎲</span>
+                            <span class="random-text" id="randomText">Random</span>
+                        </button>
+                    </div>
+                    
+                    <div class="search-controls-compact">
+                        <label class="search-label-compact" for="elementNumberSearch">#️⃣</label>
                     <input 
                         type="number" 
                         id="elementNumberSearch" 
@@ -135,7 +144,10 @@
                 </div>
                 <div class="navigation-section">
                     <button class="nav-btn-compact" id="prevBtn" onclick="quiz.previousElement()" title="Previous Element (Ctrl+←)">⬅️</button>
-                    <button class="nav-btn-compact reset" id="resetBtn" onclick="quiz.resetToFirst()" title="Reset to First Element (Page 1)">🔄</button>
+                    <button class="nav-btn-compact refresh" id="refreshBtn" onclick="quiz.refreshToDefault()" title="Refresh Everything to Default Settings (Ctrl+R)">
+                        <span class="refresh-icon">🔄</span>
+                        <span class="refresh-text">Reset All</span>
+                    </button>
                     <button class="nav-btn-compact primary" id="nextBtn" onclick="quiz.nextElement()" title="Next Element (Ctrl+→)">➡️</button>
                         </div>
                     </div>
